@@ -57,6 +57,14 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define limit_max_Pin GPIO_PIN_0
+#define limit_max_GPIO_Port GPIOA
+#define limit_min_Pin GPIO_PIN_1
+#define limit_min_GPIO_Port GPIOA
+#define W_led_Pin GPIO_PIN_2
+#define W_led_GPIO_Port GPIOA
+#define int_Pin GPIO_PIN_8
+#define int_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 

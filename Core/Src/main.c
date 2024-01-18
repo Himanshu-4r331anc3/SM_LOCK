@@ -18,9 +18,11 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "RFID.h"
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
+#include <stdio.h>
 
 /* USER CODE END Includes */
 
@@ -31,6 +33,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
 
 /* USER CODE END PD */
 
@@ -45,6 +48,17 @@ SPI_HandleTypeDef hspi1;
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
+#ifdef __GNUC__
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#else
+#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#endif
+
+PUTCHAR_PROTOTYPE
+{
+  HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
+  return ch;
+}
 
 /* USER CODE END PV */
 
@@ -93,6 +107,8 @@ int main(void)
   MX_SPI1_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
+  	rc522_init();
+  	uint8_t rfid_id[4];
 
   /* USER CODE END 2 */
 
@@ -103,8 +119,56 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+#if 0
+
+uint8_t rfid_id[4];
+int main(void)
+		{
+		rc522_init();
+		lcd_init();
+		setCursor(0,0);
+		lcd_send_string("RFID RC522 with");
+		setCursor(7,1);
+		lcd_send_string("STM32F4");
+		setCursor(0,2);
+		lcd_send_string("EmbeddedExperIO");
+		delay(2000);
+		lcd_clear();
+		while(1)
+				{
+				if(rc522_checkCard(rfid_id))
+							{
+
+							lcd_clear();
+							char data[20];
+							setCursor(0,0);
+							lcd_send_string("RFID code is");
+							setCursor(0,1);
+							sprintf(data,"0x%x 0x%x 0x%x 0x%x",rfid_id[0],rfid_id[1],rfid_id[2],rfid_id[3]);
+							lcd_send_string(data);
+							delay(1000);
+							}
+				delay(100);
+				}
+
+		}
+
+#endif
+	  static int i =0;
+	  i++;
 	  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+	  printf("index = %d\n",i);
 	  HAL_Delay(100);
+
+	  if(rc522_checkCard(rfid_id))
+	  {
+
+//			sprintf(data,"0x%x 0x%x 0x%x 0x%x",rfid_id[0],rfid_id[1],rfid_id[2],rfid_id[3]);
+			printf("data 0x%x 0x%x 0x%x 0x%x",rfid_id[0], rfid_id[1], rfid_id[2], rfid_id[3]);
+
+			HAL_Delay(1000);
+	  }
 
   }
   /* USER CODE END 3 */
@@ -243,10 +307,16 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, W_led_Pin|GPIO_PIN_5, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : PA5 */
-  GPIO_InitStruct.Pin = GPIO_PIN_5;
+  /*Configure GPIO pins : limit_max_Pin limit_min_Pin int_Pin */
+  GPIO_InitStruct.Pin = limit_max_Pin|limit_min_Pin|int_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : W_led_Pin PA5 */
+  GPIO_InitStruct.Pin = W_led_Pin|GPIO_PIN_5;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
