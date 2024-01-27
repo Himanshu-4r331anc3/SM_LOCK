@@ -7,6 +7,12 @@
 extern SPI_HandleTypeDef hspi1;
 #define MAX_LEN 16
 
+#define CC_PORT		GPIOA		// chip select port
+#define CC_PIN		GPIO_PIN_9	// chip select pin
+
+#define RST_PORT	GPIOA		// chip reset port
+#define RST_PIN		GPIO_PIN_8	// chip reset pin
+
 /////////////////////////////////////////////////////////////////////
 //set the pin
 /////////////////////////////////////////////////////////////////////

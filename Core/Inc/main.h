@@ -31,7 +31,6 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "stm32f1_rc522.h"
 
 /* USER CODE END Includes */
 
@@ -58,8 +57,6 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define CC_Pin GPIO_PIN_13
-#define CC_GPIO_Port GPIOC
 #define limit_max_Pin GPIO_PIN_0
 #define limit_max_GPIO_Port GPIOA
 #define limit_min_Pin GPIO_PIN_1
@@ -72,6 +69,8 @@ void Error_Handler(void);
 #define M_A4_GPIO_Port GPIOA
 #define RST_Pin GPIO_PIN_8
 #define RST_GPIO_Port GPIOA
+#define CC_Pin GPIO_PIN_9
+#define CC_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 

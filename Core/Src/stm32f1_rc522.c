@@ -11,7 +11,9 @@
 uint8_t RC522_SPI_Transfer(uint8_t data)
 {
 	uint8_t rx_data;
-	HAL_SPI_TransmitReceive(&hspi1,&data,&rx_data,1,100);
+	HAL_StatusTypeDef errorCode = 5U;
+
+	errorCode = HAL_SPI_TransmitReceive(&hspi1,&data,&rx_data,1,100);
 	
 	/*while(SPI_I2S_GetFlagStatus(MFRC522_SPI, SPI_I2S_FLAG_TXE)==RESET);
 	SPI_I2S_SendData(MFRC522_SPI,data);
@@ -31,14 +33,14 @@ void Write_MFRC522(uint8_t addr, uint8_t val)
 {
 	/* CS LOW */
 	//GPIO_ResetBits(MFRC522_CS_GPIO, MFRC522_CS_PIN);
-  HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(CC_PORT,CC_PIN,GPIO_PIN_RESET);
 	//The address is located:0XXXXXX0
 	RC522_SPI_Transfer((addr<<1)&0x7E);	
 	RC522_SPI_Transfer(val);
 	
 	/* CS HIGH */
 	//GPIO_SetBits(MFRC522_CS_GPIO, MFRC522_CS_PIN);
-	HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,GPIO_PIN_SET);
+	HAL_GPIO_WritePin(CC_PORT,CC_PIN,GPIO_PIN_SET);
 }
 
 
@@ -50,11 +52,11 @@ void Write_MFRC522(uint8_t addr, uint8_t val)
  */
 uint8_t Read_MFRC522(uint8_t addr)
 {
-	uint8_t val;
+	uint8_t val = 0x5;
 
 	/* CS LOW */
 	//GPIO_ResetBits(MFRC522_CS_GPIO, MFRC522_CS_PIN);
-	HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(CC_PORT,CC_PIN,GPIO_PIN_RESET);
 
 	//The address is located:1XXXXXX0
 	RC522_SPI_Transfer(((addr<<1)&0x7E) | 0x80);	
@@ -62,7 +64,7 @@ uint8_t Read_MFRC522(uint8_t addr)
 	
 	/* CS HIGH */
 	//GPIO_SetBits(MFRC522_CS_GPIO, MFRC522_CS_PIN);
-	HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,GPIO_PIN_SET);
+	HAL_GPIO_WritePin(CC_PORT,CC_PIN,GPIO_PIN_SET);
 	return val;	
 	
 }
@@ -189,8 +191,8 @@ void MFRC522_Init(void)
 {
 
 	//GPIO_SetBits(MFRC522_CS_GPIO,MFRC522_CS_PIN);						// Activate the RFID reader
-	HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_0,GPIO_PIN_SET);
+	HAL_GPIO_WritePin(CC_PORT,CC_PIN,GPIO_PIN_SET);		//			A4
+	HAL_GPIO_WritePin(RST_PORT,RST_PIN,GPIO_PIN_SET);		// 			B0
 	//GPIO_SetBits(MFRC522_RST_GPIO,MFRC522_RST_PIN);					// not reset
 
 		// spi config
