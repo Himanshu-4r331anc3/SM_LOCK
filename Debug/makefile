@@ -52,6 +52,12 @@ default.size.stdout \
 OBJDUMP_LIST += \
 smart_lock.list \
 
+OBJCOPY_HEX += \
+smart_lock.hex \
+
+OBJCOPY_BIN += \
+smart_lock.bin \
+
 
 # All Target
 all: main-build
@@ -75,12 +81,22 @@ smart_lock.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
+smart_lock.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "smart_lock.hex"
+	@echo 'Finished building: $@'
+	@echo ' '
+
+smart_lock.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "smart_lock.bin"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 # Other Targets
 clean:
-	-$(RM) default.size.stdout smart_lock.elf smart_lock.list smart_lock.map
+	-$(RM) default.size.stdout smart_lock.bin smart_lock.elf smart_lock.hex smart_lock.list smart_lock.map
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX) $(OBJCOPY_BIN)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'

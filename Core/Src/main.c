@@ -24,7 +24,7 @@
 
 #include <stdio.h>
 #include <stm32f1_rc522.h>
-
+#include "config.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -70,8 +70,7 @@ uint8_t serNum[5];
 uint8_t key;
 //uint8_t check,check2;
 
-uint8_t Key_Card[4]  = {170, 49, 60, 41};
-uint8_t Key_Card2[4] = {228, 85, 45, 40};
+
 
 uint8_t  KEY[] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
 uint8_t  KEY2[]={1,2,3,4,5,6};       //{1,2,3,4,5,6};//"mohem";
@@ -132,12 +131,17 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  USER_LED_ON;
+//  Motor_forward();
+  Card_detect();
 
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+
 
 	  status = MFRC522_Request(PICC_REQIDL, str);	//MFRC522_Request(0x26, str)
 	  status = MFRC522_Anticoll(str);		//Take a collision, look up 5 bytes
@@ -150,7 +154,7 @@ int main(void)
 
 	  }
 
-	  HAL_Delay(100);
+	  HAL_Delay(200);
 
 
   }
@@ -248,18 +252,21 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, W_led_Pin|M__Pin|M_A4_Pin|GPIO_PIN_5
-                          |RST_Pin|CC_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, W_led_Pin|M__Pin|M_A4_Pin|RST_Pin
+                          |CC_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(USR_LED_GPIO_Port, USR_LED_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pins : limit_max_Pin limit_min_Pin */
   GPIO_InitStruct.Pin = limit_max_Pin|limit_min_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : W_led_Pin M__Pin M_A4_Pin PA5
+  /*Configure GPIO pins : W_led_Pin M__Pin M_A4_Pin USR_LED_Pin
                            RST_Pin CC_Pin */
-  GPIO_InitStruct.Pin = W_led_Pin|M__Pin|M_A4_Pin|GPIO_PIN_5
+  GPIO_InitStruct.Pin = W_led_Pin|M__Pin|M_A4_Pin|USR_LED_Pin
                           |RST_Pin|CC_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
