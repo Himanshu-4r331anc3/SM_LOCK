@@ -7,6 +7,7 @@
 
 uint8_t Key_Card[5]  = {0x93, 0x59, 0x93, 0x6, 0x5f};
 uint8_t Key_Card2[5] = {0xdc, 0x27, 0x87, 0x64, 0x18};
+uint8_t Key_Card_Read[5] ;
 
 
 void Motor_forward(void)
@@ -95,8 +96,15 @@ void Card_detect(void)
 				(str[1] == Key_Card2[1]) &&
 				(str[2] == Key_Card2[2]) &&
 				(str[3] == Key_Card2[3]) &&
-				(str[4] == Key_Card2[4])))
+				(str[4] == Key_Card2[4])) ||
+
+				((str[0] == Key_Card_Read[0]) &&
+				(str[1] == Key_Card_Read[1]) &&
+				(str[2] == Key_Card_Read[2]) &&
+				(str[3] == Key_Card_Read[3]) &&
+				(str[4] == Key_Card_Read[4])))
 			{
+				WHITE_LED_ON;
 				Flap_open();
 				HAL_Delay(2*1000);
 
@@ -132,18 +140,27 @@ void Store_UID(void)
 
 			  Flash_Write_Data(STORE_ADDRESS,str, 5);
 
+			  for(int i=0;i<11;i++)
+			  {
+				  USER_LED_TOGGLE;
+				  HAL_Delay(100);
+			  }
+			  return;
+
 		}
+		USER_LED_oFF;
 
 		HAL_Delay(100);
+
 	}
 
-
+//	NVIC_SystemReset();
 
 }
 
-void Read_UID(void)
+void Retrieve_UID(void)
 {
-
+	Flash_Read_Data (STORE_ADDRESS, Key_Card_Read, 5);
 
 }
 

@@ -62,7 +62,7 @@
 #define USER_LED_PORT			GPIOA
 #define USER_LED_PIN			GPIO_PIN_5
 #define USER_LED_ON				HAL_GPIO_WritePin(USER_LED_PORT, USER_LED_PIN, LOW)
-#define USER_LED_ofF			HAL_GPIO_WritePin(USER_LED_PORT, USER_LED_PIN, HIGH)
+#define USER_LED_oFF			HAL_GPIO_WritePin(USER_LED_PORT, USER_LED_PIN, HIGH)
 #define USER_LED_TOGGLE			HAL_GPIO_TogglePin(USER_LED_PORT, USER_LED_PIN)
 
 
@@ -77,6 +77,8 @@ void Flap_open(void);
 void Flap_close(void);
 uint8_t Flap_position(void);
 void Card_detect(void);
+void Store_UID(void);
+void Retrieve_UID(void);
 
 
 

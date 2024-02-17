@@ -133,6 +133,9 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   USER_LED_ON;
+  WHITE_LED_OFF;
+  Store_UID();
+  Retrieve_UID();
 //  Motor_forward();
 //  uint32_t Key_Card[5]  = {0x93, 0x59, 0x93, 0x6, 0x5f};
 //  Flash_Write_Data(STORE_ADDRESS,Key_Card, 5);
