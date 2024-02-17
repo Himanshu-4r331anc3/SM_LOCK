@@ -73,6 +73,8 @@ void Error_Handler(void);
 #define RST_GPIO_Port GPIOA
 #define CC_Pin GPIO_PIN_9
 #define CC_GPIO_Port GPIOA
+#define Read_mode_pb_Pin GPIO_PIN_10
+#define Read_mode_pb_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 

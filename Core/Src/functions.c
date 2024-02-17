@@ -3,6 +3,7 @@
 #include "config.h"
 #include "stm32f0xx_hal.h"
 #include "stm32f1_rc522.h"
+#include "Flash_Page_f0.h"
 
 uint8_t Key_Card[5]  = {0x93, 0x59, 0x93, 0x6, 0x5f};
 uint8_t Key_Card2[5] = {0xdc, 0x27, 0x87, 0x64, 0x18};
@@ -111,9 +112,40 @@ void Card_detect(void)
 }
 
 
+void Store_UID(void)
+{
+	if(!IS_READ_MODE_ACTIVE)
+	{
+		return;
+	}
+
+
+	uint8_t str[16]; // Max_LEN = 16
+	uint8_t status;
+
+	while(1)
+	{
+		status = MFRC522_Request(PICC_REQIDL, str);	//MFRC522_Request(0x26, str)
+		status = MFRC522_Anticoll(str);				//Take a collision, look up 5 bytes
+		if(status == MI_OK)
+		{
+
+			  Flash_Write_Data(STORE_ADDRESS,str, 5);
+
+		}
+
+		HAL_Delay(100);
+	}
 
 
 
+}
+
+void Read_UID(void)
+{
+
+
+}
 
 
 

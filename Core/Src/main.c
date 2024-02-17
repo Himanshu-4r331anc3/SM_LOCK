@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <stm32f1_rc522.h>
 #include "config.h"
+#include "Flash_Page_f0.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -133,6 +134,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   USER_LED_ON;
 //  Motor_forward();
+//  uint32_t Key_Card[5]  = {0x93, 0x59, 0x93, 0x6, 0x5f};
+//  Flash_Write_Data(STORE_ADDRESS,Key_Card, 5);
+
+
+
   Card_detect();
 
   while (1)
@@ -258,8 +264,8 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(USR_LED_GPIO_Port, USR_LED_Pin, GPIO_PIN_SET);
 
-  /*Configure GPIO pins : limit_max_Pin limit_min_Pin */
-  GPIO_InitStruct.Pin = limit_max_Pin|limit_min_Pin;
+  /*Configure GPIO pins : limit_max_Pin limit_min_Pin Read_mode_pb_Pin */
+  GPIO_InitStruct.Pin = limit_max_Pin|limit_min_Pin|Read_mode_pb_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);

@@ -11,6 +11,11 @@
 #include "stm32f0xx_hal.h"
 
 
+/*********************** flash memory page address to store uid of rfid card********************/
+
+#define STORE_ADDRESS			0x0800FC00
+
+
 #define HIGH					1U
 #define LOW						0U
 
@@ -26,6 +31,16 @@
 #define LIMIT_MIN_PORT			GPIOA
 #define GET_LIMIT_MIN			HAL_GPIO_ReadPin(LIMIT_MIN_PORT, LIMIT_MIN_PIN)
 
+/************************** Read Mode Push Button **************/
+
+#define READ_MODE_PUSH_BUTTON_PORT		GPIOA
+#define READ_MODE_PUSH_BUTTON_PIN		GPIO_PIN_10
+#define GET_READ_MODE_PUSH_BUTTON		HAL_GPIO_ReadPin(READ_MODE_PUSH_BUTTON_PORT, READ_MODE_PUSH_BUTTON_PIN)
+#define IS_READ_MODE_ACTIVE				!(GET_READ_MODE_PUSH_BUTTON)
+
+
+/******************* Motor Pin and Macro Define****************/
+
 #define MOTOR_POSITIVE_PIN		GPIO_PIN_3
 #define MOTOR_POSITIVE_PORT		GPIOA
 #define MOTOR_POSITIVE_HIGH		HAL_GPIO_WritePin(MOTOR_POSITIVE_PORT, MOTOR_POSITIVE_PIN, HIGH)
@@ -35,6 +50,9 @@
 #define MOTOR_NEGATIVE_PORT		GPIOA
 #define MOTOR_NEGATIVE_HIGH		HAL_GPIO_WritePin(MOTOR_NEGATIVE_PORT, MOTOR_NEGATIVE_PIN, HIGH)
 #define MOTOR_NEGATIVE_LOW		HAL_GPIO_WritePin(MOTOR_NEGATIVE_PORT, MOTOR_NEGATIVE_PIN, LOW)
+
+
+/*********************** LED define*************************/
 
 #define WHITE_LED_PIN			GPIO_PIN_2
 #define WHITE_LED_PORT			GPIOA
