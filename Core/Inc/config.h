@@ -13,7 +13,8 @@
 
 /*********************** flash memory page address to store uid of rfid card********************/
 
-#define STORE_ADDRESS			0x0800FC00
+#define STORE_ADDRESS_1			0x0800FC00
+#define STORE_ADDRESS_2			0x0800F800
 
 
 #define HIGH					1U

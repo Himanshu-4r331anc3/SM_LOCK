@@ -149,7 +149,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
+#if		0
 
 
 	  status = MFRC522_Request(PICC_REQIDL, str);	//MFRC522_Request(0x26, str)
@@ -162,6 +162,7 @@ int main(void)
 		  printf("index = %d\n",i);
 
 	  }
+#endif
 
 	  HAL_Delay(200);
 
